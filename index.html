@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spec — Vintify-clone MVP</title>
+<style>
+:root{--bg:#0a0a0f;--card:#141420;--txt:#e7e7ef;--mut:#9a9ab0;--ac:#8b5cf6;--ac2:#c4b5fd;--bd:#26263a;--ok:#34d399;--warn:#fbbf24}
+html[data-theme=light]{--bg:#f7f7fb;--card:#fff;--txt:#1a1a24;--mut:#6a6a80;--bd:#e5e5f0;--ac2:#7c3aed}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.6 Geist,Inter,system-ui,sans-serif}
+a{color:var(--ac)}
+.wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:28px;margin:8px 0 4px}
+h2{font-size:20px;margin:36px 0 8px;border-bottom:1px solid var(--bd);padding-bottom:6px}
+h3{color:var(--ac2)}
+.meta{color:var(--mut);font-size:13px}
+.badge{display:inline-block;background:var(--ac);color:#fff;font-size:11px;padding:2px 10px;border-radius:99px;font-weight:700;margin-right:6px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 18px;margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{border:1px solid var(--bd);padding:7px 10px;text-align:left}
+th{background:rgba(139,92,246,.12)}
+.warn{border-left:3px solid var(--warn);margin-left:6px;padding-left:12px;color:var(--mut)}
+ul{margin:6px 0}
+.tgl{position:fixed;top:14px;right:14px;z-index:9;background:var(--card);border:1px solid var(--bd);color:var(--txt);border-radius:99px;padding:6px 14px;cursor:pointer}
+nav{position:fixed;left:0;top:0;bottom:0;width:210px;padding:20px 14px;border-right:1px solid var(--bd);overflow:auto;font-size:13px}
+nav a{display:block;padding:4px 8px;border-radius:8px;color:var(--mut);text-decoration:none}
+nav a:hover{background:var(--card);color:var(--txt)}
+main{margin-left:230px}
+@media(max-width:860px){nav{position:static;width:auto;height:auto;border:0}main{margin:0}}
+</style>
+</head>
+<body>
+<button class="tgl" onclick="const h=document.documentElement;h.dataset.theme=h.dataset.theme==='light'?'dark':'light';localStorage.theme=h.dataset.theme">Thème</button>
+<script>document.documentElement.dataset.theme=localStorage.theme||'dark'</script>
+<nav>
+<a href="#resume">Résumé</a><a href="#users">Personas</a><a href="#features">Features MVP</a><a href="#economics">Pricing extrait</a><a href="#non">Non-features</a><a href="#stack">Stack & data</a><a href="#phases">Phases & validation</a><a href="#tasks">Tasks</a><a href="#securite">Sécurité & légal</a><a href="#success">Critères de succès</a>
+</nav>
+<main class="wrap">
+<div class="meta"><span class="badge">P0</span><span class="badge">Spec 001</span> Go utilisateur : 13/09/2026 · Statut : Draft pour review</div>
+<h1>Vintify-clone — Spec MVP</h1>
+<p class="meta">Clone mécanique d'un SaaS « photos pro IA pour vendeurs Vinted ». Le produit de référence définit la spec ; nom/copy/design réécrits de zéro.</p>
+
+<h2 id="resume">1. Résumé exécutif</h2>
+<p>L'utilisateur photographie un vêtement à plat → l'IA analyse (type, genre, taille, état, marque, couleurs) → génération de photos « catalogue » : portées par un mannequin IA avec pose et ambiance choisies, ou à plat → l'IA rédige titre, description et hashtags → annonce complète dans « Mes annonces », prête à copier-coller. Monétisation : abonnements mensuels (6 tiers) + packs ponctuels, quotas par plan.</p>
+
+<h2 id="users">2. Personas</h2>
+<ul>
+<li><b>Vendeur occasionnel</b> — 2-10 annonces/mois, sensible au prix → Starter / packs.</li>
+<li><b>Power seller</b> — 50+ annonces/mois, mannequins réutilisables, qualité 4K → tiers hauts.</li>
+<li><b>Admin</b> — users, quotas, poses/fonds, prompts, storage, coût réel.</li>
+</ul>
+
+<h2 id="features">3. Features MVP</h2>
+<h3>3.1 Wizard 5 étapes (chaque étape ré-ouvrable via « Modifier »)</h3>
+<div class="card"><ol>
+<li><b>Photo de l'article</b> — upload / prise photo / collage, max 5. Analyse vision auto : type (haut / bas / couvre-chef), genre, taille, état, couleurs, marque, capuche/poches.</li>
+<li><b>Détails</b> — pré-remplis, éditables. États : Neuf avec étiquette / Neuf sans étiquette / Très bon état / Bon état / Satisfaisant.</li>
+<li><b>Type de photo</b> — Porté par mannequin / À plat (plié face, dos, manches rentrées).</li>
+<li><b>Modèle</b> — Adulte / Enfant, genre, ou mannequin sauvegardé (plans IA).</li>
+<li><b>Pose + ambiance</b> — poses multiples (Face, Dos, 3/4, Selfie sans visage, Capuché, Assis, plié…) ; 12 ambiances (Studio, Fond noir/blanc/gris, Chambre vintage, Dressing, Salon, Balcon parisien, Nature, Table shooting, Magazine).</li>
+</ol></div>
+<h3>3.2 Génération</h3>
+<ul><li>Jobs async : createTask + callback, progression SSE, idempotence, coût réservé au lancement puis débité au réel au callback.</li>
+<li>Qualité par plan : 1K / 2K / 4K. Améliorations IA par presets (« couleurs fidèles », « moins de plis », « tissu naturel », « print net », « t-shirt opaque »).</li></ul>
+<h3>3.3 Mannequins IA (plans IA)</h3>
+<ul><li>Création via photo de référence OU paramétrique : genre, âge 18-52, origine, yeux, cheveux, morphologie, expression, détails distinctifs, style (E-commerce / Lifestyle / Neutre), curseur de variation 0-100% selon plan.</li><li>Galerie « Mes mannequins » réutilisables dans le wizard.</li></ul>
+<h3>3.4 Rédaction & annonces</h3>
+<ul><li>Titre + description + hashtags par LLM (quota rédactions).</li><li>Mes annonces : fiche complète, copie/telechargement, historique.</li></ul>
+<h3>3.5 Crédits</h3>
+<ul><li>Quotas : images, annonces, rédactions, mannequins — trackés en DB (jamais le client).</li><li>Free : 2 annonces + images offertes. Échec API = refund automatique.</li></ul>
+
+<h2 id="economics">4. Pricing de référence (extrait réel du bundle cible)</h2>
+<table><tr><th>Plan</th><th>Prix</th><th>Images</th><th>Annonces</th><th>Rédactions</th><th>Mannequins</th></tr>
+<tr><td>Starter</td><td>9,99 €</td><td>80 (1K)</td><td>20</td><td>60</td><td>—</td></tr>
+<tr><td>Starter + IA</td><td>14,99 €</td><td>120 (1K)</td><td>20</td><td>60</td><td>5/mois</td></tr>
+<tr><td>Pro</td><td>19,99 €</td><td>100 (2K)</td><td>30-80</td><td>160-240</td><td>—</td></tr>
+<tr><td>Power Seller</td><td>29,99 €</td><td>145 (4K)</td><td>50</td><td>120</td><td>—</td></tr>
+<tr><td>Pro + IA</td><td>29,99 €</td><td>180 (2K)</td><td>80</td><td>240</td><td>10/mois, variation 0-50</td></tr>
+<tr><td>Power Seller + IA</td><td>49,99 €</td><td>250 (4K)</td><td>140</td><td>420</td><td>20/mois, variation 0-100, ajustements avancés</td></tr></table>
+<p class="warn">Prix à re-confirmer après Phase 3 en comparant au coût réel API (dashboard cost intelligence).</p>
+
+<h2 id="non">5. Non-features v1</h2>
+<p>Essayage virtuel sur photo d'utilisateur · retouche batch · inspiration visage avancée · app mobile native · multi-langue (FR seul) · sync Vinted automatique · API publique · partage de mannequins.</p>
+
+<h2 id="stack">6. Stack & data model</h2>
+<table><tr><th>Couche</th><th>Choix</th></tr>
+<tr><td>App</td><td>Next.js 15 App Router + Tailwind — Vercel — dark #0a0a0f / violet #8b5cf6 — mobile-first 480px</td></tr>
+<tr><td>DB</td><td>Neon Postgres (drizzle), projet dédié org raspy-wind-28677394</td></tr>
+<tr><td>Auth</td><td>Email+mdp (argon2) + JWT cookie — Google OAuth branchable ensuite</td></tr>
+<tr><td>Storage</td><td>Cloudflare R2 — sources + sorties, URLs signées, rétention 90j</td></tr>
+<tr><td>Billing</td><td>Stripe Checkout + Portal + webhooks signés idempotents</td></tr>
+<tr><td>IA</td><td>ArvGateway (provider unique) — vision, édits image, portraits, LLM</td></tr>
+<tr><td>Emails</td><td>Resend</td></tr></table>
+<p>Migrations : users → credit_balances (+credit_transactions avec idempotency_key unique) → ads/ad_images → generation_jobs → mannequins → poses/backgrounds (admin-editable) → plans_config (pricing = config).</p>
+
+<h2 id="phases">7. Phases — chaque phase se termine par ton « go »</h2>
+<table><tr><th>#</th><th>Contenu</th><th>Validation</th></tr>
+<tr><td>0</td><td>Scaffold, Neon, auth, shell, admin minimal, seeds</td><td>Inscription/login + isolation 2 comptes</td></tr>
+<tr><td>1</td><td>Wizard 5 étapes + analyse garment + jobs + R2 + poses/fonds</td><td>1 annonce générée E2E &lt; 60s</td></tr>
+<tr><td>2</td><td>Crédits, gating, refunds, packs</td><td>bloqué → crédité → remboursé</td></tr>
+<tr><td>3</td><td>Stripe checkout/portal/webhooks + pricing</td><td>carte 4242 → crédits &lt; 5s, idempotent</td></tr>
+<tr><td>4</td><td>Mannequins IA (photo + paramétrique)</td><td>créé puis réutilisé dans une annonce</td></tr>
+<tr><td>5</td><td>Rédaction IA + Mes annonces + historique</td><td>annonce complète copiable</td></tr>
+<tr><td>6</td><td>Retouche IA, emails, FAQ/guide, RGPD, landing, polish</td><td>checklist E2E verte</td></tr></table>
+
+<h2 id="securite">8. Sécurité & légal (revue critique)</h2>
+<ul>
+<li>Proxy BFF relaie toujours l'Authorization Bearer au backend ; gating backend sur les médias (URLs signées, jamais le « blur CSS »).</li>
+<li>Idempotency sur tout achat/génération ; webhooks Stripe vérifiés ; aucune route legacy non signée.</li>
+<li>Quotas : DB fait foi ; le seed admin n'écrase jamais un hash ; 429 rate-limit ≠ bug de mdp.</li>
+<li>RGPD : export (art. 20) + suppression en cascade (art. 17) + CGU/Privacy/Cookies.</li>
+<li><b>Marque</b> : aucun nom, logo, texte ou asset de la cible. Mécaniques seules clonées. Mention produit : « le vêtement source n'est jamais altéré » (garantie Cloth-Preserve).</li>
+</ul>
+
+<h2 id="success">9. Critères de succès</h2>
+<ul>
+<li>E2E : inscription → free credits → wizard → annonce générée (images + texte) &lt; 60s/génération.</li>
+<li>Échec API = refund vérifié en DB.</li>
+<li>Isolation : le compte B ne voit jamais les données de A (404, jamais 403).</li>
+<li>Paiement test : crédits en &lt; 5s, double-clic = un seul paiement.</li>
+<li>Wizard complet utilisable en 480px.</li>
+</ul>
+</main>
+</body>
+</html>
