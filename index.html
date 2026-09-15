@@ -51,7 +51,7 @@ main{margin-left:230px}
 <button class="tgl" onclick="const h=document.documentElement;h.dataset.theme=h.dataset.theme==='light'?'dark':'light';localStorage.theme=h.dataset.theme">Thème</button>
 <script>document.documentElement.dataset.theme=localStorage.theme||'dark'</script>
 <nav>
-<a href="#resume">Résumé</a><a href="#users">Personas</a><a href="#features">Features MVP</a><a href="#economics">Pricing extrait</a><a href="#non">Non-features</a><a href="#services">Services IA</a><a href="#prompts">Prompts</a><a href="#admin">Admin</a><a href="#i18n">I18n</a><a href="#tests">Tests</a><a href="#stack">Stack & data</a><a href="#phases">Phases & validation</a><a href="#tasks">Tasks</a><a href="#securite">Sécurité & légal</a><a href="#success">Critères de succès</a>
+<a href="#resume">Résumé</a><a href="#users">Personas</a><a href="#features">Features MVP</a><a href="#economics">Pricing extrait</a><a href="#non">Non-features</a><a href="#services">Services IA</a><a href="#prompts">Prompts</a><a href="#admin">Admin</a><a href="#i18n">I18n</a><a href="#tests">Tests</a><a href="#stack">Stack & data</a><a href="#phases">Phases & validation</a><a href="#sessions">Sessions de code</a><a href="#tasks">Tasks</a><a href="#securite">Sécurité & légal</a><a href="#success">Critères de succès</a>
 <a href="charte.html">Charte graphique</a></nav>
 <main class="wrap">
 <div class="meta"><span class="badge">P0</span><span class="badge">Spec 001</span> Go utilisateur : 13/09/2026 · Statut : Draft pour review</div>
@@ -246,6 +246,75 @@ main{margin-left:230px}
 <tr><td>6</td><td>Retouche IA, emails, FAQ/guide, légal EN, landing FR+EN, polish</td><td>checklist E2E verte</td></tr>
 <tr><td>7</td><td>Services IA : repassage + essayage, moteur de prompts, admin prompts</td><td>1 repassage + 1 essayage E2E, prompt jamais exposé</td></tr>
 <tr><td>8</td><td>Admin complet : crédits +N/−N, suspension, catalogue, plans, jobs, coût réel, audit</td><td>crédit ajouté vérifié en DB + suspension effective</td></tr></table>
+
+
+<h2 id="sessions">7bis. Sessions de code du MVP</h2>
+<div class="card">
+<p>Une session = une phase = une branche + une PR + un déploiement de prévisualisation. Chaque session se termine par ses <b>preuves</b> (familles A→G de la section 5bis) et par ta porte de validation. Aucune session suivante ne démarre sans ton « go ».</p>
+</div>
+
+<h3>S0 — Prérequis (0,5 j, sans code)</h3>
+<table><tr><th>À lever</th><th>Preuve attendue</th></tr>
+<tr><td>Neon : projet dédié + base + rôle applicatif</td><td>connexion <code>psql</code> OK</td></tr>
+<tr><td>ArvGateway : app (id + secret), <code>defapi:gpt-image-2-edit</code> actif, <b>accès admin rétabli</b></td><td><code>curl /v1/generate</code> → <code>job_id</code></td></tr>
+<tr><td>R2 : bucket <code>artyvision</code> + préfixe <code>vintify/</code> (déjà en place)</td><td><code>LIST</code> → 119 objets</td></tr>
+<tr><td>Stripe test : 6 prix + endpoint webhook + secret</td><td><code>stripe prices list</code></td></tr>
+<tr><td>Resend : domaine expéditeur + clé</td><td>email de test reçu</td></tr>
+<tr><td>Vercel : projet + domaine de préproduction</td><td>URL répond 200</td></tr>
+<tr><td>Comptes de test A / B / admin</td><td>3 connexions réussies</td></tr>
+</table>
+<p class="warn">Vérifié le 15/09 : le <code>.env</code> local d'ArvGateway ne contient qu'une valeur de développement (<code>dev-ke…</code>, 17 caractères) — la vraie clé admin vit dans l'environnement Vercel. L'accès admin au gateway doit être rétabli (token applicatif <code>is_admin</code>) <b>avant S2</b>, sinon la supervision des jobs et du coût réel est impossible.</p>
+
+<h3>S1 — Phase 0 : Socle (2-3 j)</h3>
+<div class="card"><p>Tâches L1, L2, L3, L3b, L4, L5, L5b, L5c, L6 · <b>VALIDATION 0</b></p>
+<ul>
+<li>Repo + Next.js 15 + Tailwind avec les tokens de la charte (vert sur blanc).</li>
+<li><code>next-intl</code> FR/EN installé <b>avant la première ligne d'UI</b> : routing <code>/[locale]</code>, middleware, 2 fichiers de messages, switcher, <code>hreflang</code>.</li>
+<li>Neon : migrations + <code>prompt_templates</code>, <code>credit_transactions</code> étendu, <code>users</code> étendu (<code>ui_locale</code>, <code>suspended_at</code>).</li>
+<li>Auth argon2 + JWT, login/register/onboarding, shell app, admin minimal, <b>crédits +N/−N</b>, <b>suspension</b>, seed admin.</li>
+</ul>
+<p><b>Preuves</b> : build exit 0 · inscription et login curl en FR et EN · isolation 2 comptes → <b>404</b> · capture 390 px · <code>+N</code> vérifié en SQL avec <code>reason</code> et <code>balance_after</code> · compte suspendu → login refusé et session rejetée.</p></div>
+
+<h3>S2 — Phase 1 : Wizard &amp; génération (2,5 j)</h3>
+<div class="card"><p>Tâches L7 à L13 · <b>VALIDATION 1</b></p>
+<p><b>Preuves</b> : 1 annonce générée E2E <b>chronométrée &lt; 60 s</b> · image servie en <code>200 image/webp</code> · job <code>done</code> en base avec coût réel · même <code>Idempotency-Key</code> = 1 seul job · non-régression 390 px.</p>
+<p class="warn">Bloqueur : accès admin ArvGateway (S0).</p></div>
+
+<h3>S3 — Phase 2 : Crédits &amp; économie (1,5 j)</h3>
+<div class="card"><p>Tâches L14 à L17 · <b>VALIDATION 2</b></p>
+<p><b>Preuves</b> : solde 0 → refus propre sans job créé · échec API forcé → solde restauré (SQL) · lignes <code>credit_transactions</code> cohérentes · retry sans double débit.</p></div>
+
+<h3>S4 — Phase 3 : Stripe (1 j)</h3>
+<div class="card"><p>Tâches L18 à L20 · <b>VALIDATION 3</b></p>
+<p><b>Preuves</b> : carte 4242 → crédits actifs en &lt; 5 s · rejeu du même webhook = un seul reset · signature invalide → 400 · page pricing conforme à <code>plans_config</code>.</p></div>
+
+<h3>S5 — Phase 4 : Mannequins IA (1,5 j)</h3>
+<div class="card"><p>Tâches L21 à L23 · <b>VALIDATION 4</b></p>
+<p><b>Preuves</b> : mannequin créé par photo <b>et</b> paramétrique · clé R2 vérifiée · réutilisé dans une annonce générée · cohérence jugée sur 3 générations successives du même mannequin, avec rapport honnête sur la dérive éventuelle.</p>
+<p class="warn">Décision ouverte : si la dérive du visage est inacceptable, un modèle d'identité (flux-kontext / seedream) doit être ajouté au gateway — à trancher après ce test, chiffres en main.</p></div>
+
+<h3>S6 — Phase 5 : Rédaction &amp; annonces (1 j)</h3>
+<div class="card"><p>Tâches L24, L25 · <b>VALIDATION 5</b></p>
+<p><b>Preuves</b> : annonce complète (images + titre + description + hashtags) copiable · langue de l'annonce respectée (<code>listing_language</code> distinct de <code>ui_locale</code>) · historique et édition fonctionnels.</p></div>
+
+<h3>S7 — Phase 6 : Polish, légal, emails (1,5 j)</h3>
+<div class="card"><p>Tâches L26 à L30 · <b>VALIDATION 6</b></p>
+<p>Retouche IA + slider avant/après, emails Resend, FAQ/guide, CGU/Privacy/Cookies <b>en anglais</b>, landing FR <b>et</b> EN, onboarding. Checklist non-régression complète (A→G) sur les parcours free, payant et admin.</p></div>
+
+<h3>S8 — Phase 7 : Services IA &amp; moteur de prompts (2,5 j)</h3>
+<div class="card">
+<p><b>S8a — moteur de prompts + admin prompts</b> (L31, L32). Preuves : tests unitaires du rendu (5 blocs, substitution, variable hors whitelist = échec explicite) · save = nouvelle version · rollback vérifié · preview génère réellement · compte non-admin → 403.</p>
+<p><b>S8b — services</b> (L33, L34, L35, L36) · <b>VALIDATION 7</b>. Preuves : 1 repassage + 1 essayage E2E · les 3 modes d'essayage dont <code>set_split</code> = 2 appels gateway et <b>1 seul crédit</b> en base, coût réel des 2 appels tracé · <b>L35 : 0 occurrence d'un extrait de prompt dans les réponses API et le bundle JS</b> · dimensions 2K/4K mesurées sur le fichier livré.</p>
+<p class="warn">Bloqueurs à lever avant S8b : décision sur l'upscale 2K/4K ; décision sur le modèle d'identité.</p></div>
+
+<h3>S9 — Phase 8 : Admin complet (1,5 j)</h3>
+<div class="card"><p>Catalogue (poses, fonds, mannequins), plans &amp; pricing sans code, jobs + coût réel, storage R2, journal d'audit · <b>VALIDATION 8</b></p>
+<p><b>Preuves</b> : ajout de crédits vérifié en DB avec trace d'audit · suspension effective · catalogue éditable sans redéploiement · coût réel agrégé sur au moins 5 générations réelles.</p></div>
+
+<div class="card">
+<p><b>Total estimé : 10 sessions, ~15 à 17 jours ouvrés.</b></p>
+<p class="meta">Règles : une session = une branche + une PR + un déploiement de prévisualisation ; les E2E tournent sur le déploiement, jamais en local. Compte rendu de fin de session = preuves obtenues + ce qui reste non testé. Si un bloqueur externe apparaît (gateway, Stripe, quota, accès), je m'arrête et je te le dis — je ne contourne pas en silence.</p>
+</div>
 
 <h2 id="securite">8. Sécurité & légal (revue critique)</h2>
 <ul>
