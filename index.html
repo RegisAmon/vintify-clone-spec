@@ -38,8 +38,9 @@ main{margin-left:230px}
 .mnum{position:absolute;top:4px;left:4px;z-index:2;background:rgba(10,10,15,.72);border-radius:6px;font-size:10px;font-weight:700;color:#fff;padding:1px 5px}
 .mlab{display:block;font-size:10px;color:var(--mut);padding:4px 5px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mcard:hover{border-color:var(--ac)}
-.lb{position:fixed;inset:0;background:rgba(6,6,10,.94);z-index:99;display:flex;align-items:center;justify-content:center;padding:14px}
-.lb[hidden]{display:none!important}
+.lb{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(6,6,10,.94);z-index:99;display:none;align-items:center;justify-content:center;padding:14px}
+.lb.on{display:flex}
+.lb[hidden]{display:none!important;visibility:hidden}
 .lbin{max-width:760px;width:100%;max-height:100%;overflow:auto}
 .lbbar{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;margin-bottom:8px}
 .lbx{cursor:pointer;color:var(--ac2);font-size:12px;font-weight:600}
@@ -165,24 +166,44 @@ main{margin-left:230px}
 </main>
 
 <script>
-document.addEventListener('click', function (e) {
-  var c = e.target.closest ? e.target.closest('.mcard') : null;
+(function () {
   var lb = document.getElementById('lb');
-  if (c) {
-    document.getElementById('lbi').src = c.dataset.full;
-    document.getElementById('lbt').textContent = c.dataset.title + ' — ' + c.dataset.meta;
-    document.getElementById('lbk').textContent = c.dataset.keys;
-    lb.hidden = false;
-    document.body.style.overflow = 'hidden';
-    e.stopPropagation();
-    return;
-  }
-  if (lb && !lb.hidden) {
+
+  function closeLb() {
+    if (!lb) return;
     lb.hidden = true;
-    document.getElementById('lbi').src = '';
+    lb.classList.remove('on');
+    lb.style.display = 'none';
+    var im = document.getElementById('lbi');
+    if (im) im.removeAttribute('src');
     document.body.style.overflow = '';
   }
-});
+
+  function openLb(card) {
+    if (!lb) return;
+    document.getElementById('lbi').src = card.getAttribute('data-full');
+    document.getElementById('lbt').textContent = card.getAttribute('data-title') + ' — ' + card.getAttribute('data-meta');
+    document.getElementById('lbk').textContent = card.getAttribute('data-keys');
+    lb.hidden = false;
+    lb.classList.add('on');
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  // état fermé garanti au chargement, même si une règle CSS manque
+  closeLb();
+
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    var card = t && t.closest ? t.closest('.mcard') : null;
+    if (card) { openLb(card); e.stopPropagation(); return; }
+    if (lb && !lb.hidden) closeLb();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeLb();
+  });
+})();
 </script>
 </body>
 </html>
