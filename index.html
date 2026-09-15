@@ -51,7 +51,7 @@ main{margin-left:230px}
 <button class="tgl" onclick="const h=document.documentElement;h.dataset.theme=h.dataset.theme==='light'?'dark':'light';localStorage.theme=h.dataset.theme">Thème</button>
 <script>document.documentElement.dataset.theme=localStorage.theme||'dark'</script>
 <nav>
-<a href="#resume">Résumé</a><a href="#users">Personas</a><a href="#features">Features MVP</a><a href="#economics">Pricing extrait</a><a href="#non">Non-features</a><a href="#services">Services IA</a><a href="#prompts">Prompts</a><a href="#admin">Admin</a><a href="#i18n">I18n</a><a href="#stack">Stack & data</a><a href="#phases">Phases & validation</a><a href="#tasks">Tasks</a><a href="#securite">Sécurité & légal</a><a href="#success">Critères de succès</a>
+<a href="#resume">Résumé</a><a href="#users">Personas</a><a href="#features">Features MVP</a><a href="#economics">Pricing extrait</a><a href="#non">Non-features</a><a href="#services">Services IA</a><a href="#prompts">Prompts</a><a href="#admin">Admin</a><a href="#i18n">I18n</a><a href="#tests">Tests</a><a href="#stack">Stack & data</a><a href="#phases">Phases & validation</a><a href="#tasks">Tasks</a><a href="#securite">Sécurité & légal</a><a href="#success">Critères de succès</a>
 <a href="charte.html">Charte graphique</a></nav>
 <main class="wrap">
 <div class="meta"><span class="badge">P0</span><span class="badge">Spec 001</span> Go utilisateur : 13/09/2026 · Statut : Draft pour review</div>
@@ -206,6 +206,22 @@ main{margin-left:230px}
 <h2 id="non">5. Non-features v1</h2>
 <p>Retouche batch · inspiration visage avancée · app mobile native · sync Vinted automatique · API publique · partage de mannequins.<br>Langues : v1 = FR + EN. Allemand, italien, espagnol = phase 2.<br>Légal : anglais uniquement (LLC Wyoming), pas de version localisée par pays.</p>
 
+
+<h2 id="tests">5bis. Tests &amp; validation — comment chaque étape est validée</h2>
+<div class="card">
+<p>Aucune case cochée sans <b>preuve d'exécution réelle</b> : sortie de commande, code HTTP, ligne SQL, capture datée. Une phase ne passe au « go » suivant que si sa porte de validation est vérifiée — pas parce que le code est écrit.</p>
+<ul>
+<li><b>A. Build &amp; types</b> — <code>npm run build</code> exit 0, <code>tsc --noEmit</code> sans erreur, lint propre. À chaque phase, jamais contourné.</li>
+<li><b>B. Unitaires</b> — rendu du prompt (5 blocs, substitution, <b>échec si variable hors whitelist</b>) · crédits (réservation, débit au réel, refund, jamais de double débit) · idempotence (même clé = 1 job, 1 mouvement) · mapping vision en enums.</li>
+<li><b>C. Intégration API</b> — curl réels sur chaque endpoint créé ou modifié : cas nominal, non autorisé, crédit épuisé. Réponse collée telle quelle.</li>
+<li><b>D. Assertions SQL</b> — on vérifie la base, pas la réponse de l'API : <code>credit_balances</code>, <code>credit_transactions</code> (kind, amount, reason, balance_after), <code>generations_jobs</code>, <code>admin_audit_log</code>.</li>
+<li><b>E. E2E Playwright sur l'app déployée</b> — parcours free, parcours payant (carte 4242), parcours admin (crédit +N, suspension). Plus viewport 390 px sur chaque écran touché.</li>
+<li><b>F. Sécurité &amp; isolation</b> — B ne voit rien de A (<b>404, jamais 403</b>) · double-clic = un seul effet · <b>prompt absent de l'UI, des API, des erreurs et du bundle</b> · suspension = session réellement invalidée.</li>
+<li><b>G. Non-régression visuelle</b> — capture 390 px avant/après chaque phase ; toute différence non voulue est un bug.</li>
+</ul>
+<p class="meta">Porte de validation : preuves A→F pour les écrans et endpoints de la phase, plus une phrase explicite sur ce qui reste non testé.</p>
+</div>
+
 <h2 id="stack">6. Stack & data model</h2>
 <table><tr><th>Couche</th><th>Choix</th></tr>
 <tr><td>App</td><td>Next.js 15 App Router + Tailwind — Vercel — <b>vert sur blanc, mobile-first 480px</b> — <a href="charte.html">charte graphique validée</a></td></tr>
@@ -248,7 +264,7 @@ main{margin-left:230px}
 <li>Échec API = refund vérifié en DB.</li>
 <li>Isolation : le compte B ne voit jamais les données de A (404, jamais 403).</li>
 <li>Paiement test : crédits en &lt; 5s, double-clic = un seul paiement.</li>
-<li>Wizard complet utilisable en 480px.</li>
+<li>Wizard complet utilisable en 480 px : navigation basse et menu mobile (drawer) fonctionnels, scroll verrouillé à l'ouverture, aucune action uniquement au survol.</li>
 </ul>
 </main>
 
