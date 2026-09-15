@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Charte graphique — Vintify-clone</title>
+<style>
+:root{
+  /* tokens repris du site cible (extraits le 15/09/2026) */
+  --background:0 0% 100%;
+  --foreground:222 47% 11%;
+  --card:0 0% 100%;
+  --primary:185 100% 26%;
+  --primary-foreground:0 0% 100%;
+  --secondary:185 100% 96%;
+  --secondary-foreground:185 100% 15%;
+  --muted:210 40% 96%;
+  --muted-foreground:215 16% 47%;
+  --accent:185 100% 26%;
+  --destructive:0 84% 60%;
+  --border:214 32% 91%;
+  --input:214 32% 91%;
+  --ring:185 100% 26%;
+  --radius:.75rem;
+  /* échelle de marque dérivée (teinte 185) */
+  --t50:#f1fcfd; --t100:#e3fafc; --t200:#b8f9ff; --t300:#7af4ff; --t400:#0aebff;
+  --t500:#00b2c2; --t600:#007a85; --t700:#00626b; --t800:#004b52; --t900:#003338;
+  /* sémantiques dérivées */
+  --ok:#0e7c4a; --warn:#b45309; --err:#ef4343; --info:#00626b;
+  /* rythme */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:64px;
+  --shadow-sm:0 1px 2px rgba(15,23,41,.06),0 1px 1px rgba(15,23,41,.04);
+  --shadow-md:0 4px 12px rgba(15,23,41,.08);
+  --shadow-lg:0 12px 32px rgba(15,23,41,.12);
+  --bg:hsl(var(--background)); --fg:hsl(var(--foreground)); --pri:hsl(var(--primary));
+  --sec:hsl(var(--secondary)); --secfg:hsl(var(--secondary-foreground));
+  --mut:hsl(var(--muted)); --mutfg:hsl(var(--muted-foreground));
+  --bd:hsl(var(--border)); --ringc:hsl(var(--ring));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.6 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:480px;margin:0 auto;padding:0 16px 96px}
+a{color:var(--pri)}
+code,.mono{font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
+.pp{display:inline-block;background:var(--sec);color:var(--secfg);border-radius:6px;padding:1px 6px;font:11px/1.5 ui-monospace,Menlo,monospace}
+
+/* barre haute */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd);margin:0 -16px 0;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.top .logo{width:26px;height:26px;border-radius:8px;background:var(--pri);display:grid;place-items:center;flex:0 0 auto}
+.top .logo svg{width:15px;height:15px;stroke:#fff}
+.top b{font-size:14px;letter-spacing:-.01em}
+.top .ver{margin-left:auto;font-size:10px;font-weight:700;color:var(--secfg);background:var(--sec);border-radius:99px;padding:3px 8px}
+
+h1{font-size:27px;line-height:1.15;font-weight:900;letter-spacing:-.02em;margin:28px 0 6px}
+h2{font-size:19px;font-weight:800;letter-spacing:-.01em;margin:36px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--bd);display:flex;gap:8px;align-items:baseline}
+h2 .n{font-size:11px;font-weight:800;color:var(--pri);background:var(--sec);border-radius:6px;padding:2px 6px}
+h3{font-size:15px;font-weight:700;margin:22px 0 6px}
+p{margin:8px 0}
+.lead{color:var(--mutfg);font-size:14px}
+.mut{color:var(--mutfg)}
+.card{background:#fff;border:1px solid var(--bd);border-radius:var(--radius);padding:14px;margin:12px 0;box-shadow:var(--shadow-sm)}
+.card.flat{box-shadow:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0}
+.toc a{font-size:12px;font-weight:600;text-decoration:none;color:var(--mutfg);border:1px solid var(--bd);border-radius:99px;padding:5px 11px;background:#fff}
+.toc a:hover{color:var(--secfg);border-color:var(--pri);background:var(--sec)}
+
+/* swatches */
+.sw{border:1px solid var(--bd);border-radius:10px;overflow:hidden;background:#fff;text-align:left;padding:0;cursor:pointer;font:inherit;color:inherit;width:100%}
+.sw .chip{height:56px}
+.sw .meta{padding:7px 9px 9px}
+.sw .meta b{display:block;font-size:11.5px;letter-spacing:-.01em}
+.sw .meta span{display:block;font:10.5px/1.4 ui-monospace,Menlo,monospace;color:var(--mutfg)}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
+.scale div{border-radius:8px;height:44px;position:relative;border:1px solid rgba(15,23,41,.06)}
+.scale div i{position:absolute;bottom:3px;left:5px;font:9px/1 ui-monospace,Menlo,monospace;font-style:normal;opacity:.85}
+
+/* typo specimens */
+.spec{border-bottom:1px dashed var(--bd);padding:10px 0}
+.spec:last-child{border:0}
+.spec .tag{font:10px/1.4 ui-monospace,Menlo,monospace;color:var(--mutfg);display:block;margin-bottom:2px}
+.s900{font-size:27px;font-weight:900;letter-spacing:-.02em;line-height:1.15}
+.s800{font-size:19px;font-weight:800;letter-spacing:-.01em}
+.s700{font-size:15px;font-weight:700}
+.s400{font-size:14px;font-weight:400}
+.s400m{font-size:12.5px;font-weight:400;color:var(--mutfg)}
+.s11{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mutfg)}
+
+/* boutons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 18px;border-radius:10px;border:1px solid transparent;font:14.5px/1 Inter,sans-serif;font-weight:700;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s,transform .06s}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:16px;height:16px;stroke-width:1.9}
+.btn-primary{background:var(--pri);color:#fff}
+.btn-primary:hover{background:var(--t700)}
+.btn-secondary{background:var(--sec);color:var(--secfg);border-color:var(--t200)}
+.btn-outline{background:#fff;color:var(--fg);border-color:var(--bd)}
+.btn-outline:hover{border-color:var(--pri);color:var(--secfg)}
+.btn-ghost{background:transparent;color:var(--mutfg)}
+.btn-ghost:hover{background:var(--mut);color:var(--fg)}
+.btn-destructive{background:#fff;color:#c2261f;border-color:#f6c9c6}
+.btn-sm{height:34px;padding:0 12px;font-size:13px;border-radius:9px}
+.btn-full{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* champs */
+.field{display:block;margin:12px 0}
+.field>span{display:block;font-size:12px;font-weight:700;margin-bottom:5px}
+.inp{width:100%;height:44px;border:1px solid var(--input);border-radius:10px;padding:0 12px;font:14.5px Inter,sans-serif;color:var(--fg);background:#fff}
+.inp::placeholder{color:#9aa6b8}
+.inp:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(0,122,133,.16)}
+.inp.err{border-color:#ef4343;box-shadow:0 0 0 3px rgba(239,67,67,.13)}
+.hint{font-size:11.5px;color:var(--mutfg);margin-top:4px}
+.hint.bad{color:#c2261f}
+
+/* badges, pills, onglets */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:800;letter-spacing:.02em;padding:4px 9px;border-radius:99px;background:var(--sec);color:var(--secfg);border:1px solid var(--t200)}
+.badge.dark{background:var(--pri);color:#fff;border-color:var(--pri)}
+.badge.grey{background:var(--mut);color:var(--mutfg);border-color:var(--bd)}
+.tabs{display:flex;gap:6px;background:var(--mut);padding:4px;border-radius:11px}
+.tabs button{flex:1;height:34px;border:0;border-radius:8px;background:transparent;font:13px Inter,sans-serif;font-weight:700;color:var(--mutfg);cursor:pointer}
+.tabs button[aria-selected="true"]{background:#fff;color:var(--secfg);box-shadow:var(--shadow-sm)}
+.seg{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.seg button{white-space:nowrap;height:36px;padding:0 13px;border-radius:9px;border:1px solid var(--bd);background:#fff;font:13px Inter,sans-serif;font-weight:600;color:var(--mutfg);cursor:pointer}
+.seg button[aria-pressed="true"]{border-color:var(--pri);background:var(--sec);color:var(--secfg)}
+.seg button[disabled]{opacity:.5;cursor:not-allowed}
+
+/* jauge quota */
+.quota{height:8px;border-radius:99px;background:var(--mut);overflow:hidden}
+.quota i{display:block;height:100%;width:38%;background:var(--pri)}
+
+/* alertes */
+.alert{display:flex;gap:10px;border-radius:11px;padding:11px 12px;font-size:13px;border:1px solid;align-items:flex-start}
+.alert svg{width:16px;height:16px;flex:0 0 auto;margin-top:2px}
+.alert.info{background:var(--sec);border-color:var(--t200);color:var(--secfg)}
+.alert.ok{background:#eefaf3;border-color:#bfe6d3;color:#0b5c39}
+.alert.warn{background:#fff8ec;border-color:#f5dcb4;color:#8a5209}
+.alert.err{background:#fef2f2;border-color:#f6c9c6;color:#c2261f}
+
+/* tab bar mobile */
+.tabbar{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--bd);background:#fff;padding:6px 4px 8px}
+.tabbar a{display:grid;justify-items:center;gap:3px;text-decoration:none;color:var(--mutfg);font-size:10px;font-weight:700}
+.tabbar a svg{width:19px;height:19px}
+.tabbar a.on{color:var(--pri)}
+
+/* maquette écran */
+.phone{border:1px solid var(--bd);border-radius:22px;overflow:hidden;background:#fff;box-shadow:var(--shadow-md);margin:12px 0}
+.phone .bar{padding:12px 14px 10px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.phone .bar b{font-size:14px}
+.phone .body{padding:12px 14px 0}
+.slot{position:relative;border:1px dashed #c8d3e0;border-radius:12px;background:#fbfcfe;aspect-ratio:3/4;display:grid;place-items:center;text-align:center;color:var(--mutfg);font-size:12px;padding:10px}
+.slot.filled{border-style:solid;border-color:var(--bd);background:linear-gradient(180deg,#f7fafc,#eef2f7)}
+.slot .n{position:absolute;top:7px;left:7px;width:19px;height:19px;border-radius:6px;background:var(--sec);color:var(--secfg);font-size:10.5px;font-weight:800;display:grid;place-items:center}
+.qual{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.qual button{border:1px solid var(--bd);background:#fff;border-radius:10px;padding:9px 6px;font:12px Inter,sans-serif;font-weight:700;color:var(--mutfg);cursor:pointer}
+.qual button.on{border-color:var(--pri);background:var(--sec);color:var(--secfg)}
+.qual button small{display:block;font-size:9.5px;font-weight:700;opacity:.75;margin-top:2px;letter-spacing:.04em}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.mgrid .m{aspect-ratio:3/4;border-radius:8px;background:linear-gradient(180deg,#eef2f7,#e2e8f0);border:1px solid var(--bd);position:relative}
+.mgrid .m.on{border:2px solid var(--pri)}
+.mgrid .m i{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-size:10px;font-weight:800;color:#9aa6b8}
+
+ul.plain{margin:8px 0;padding-left:18px}
+ul.plain li{margin:5px 0;font-size:13.5px}
+.do,.dont{border-radius:11px;padding:10px 12px;font-size:13px;margin:6px 0}
+.do{background:#eefaf3;border:1px solid #bfe6d3;color:#0b5c39}
+.dont{background:#fef2f2;border:1px solid #f6c9c6;color:#c2261f}
+pre{background:#0f1729;color:#e6edf6;border-radius:11px;padding:12px;overflow-x:auto;font:11.5px/1.65 ui-monospace,Menlo,monospace;margin:10px 0}
+.ratio{display:flex;gap:8px;align-items:flex-end;margin-top:8px}
+.ratio div{border:1px solid var(--bd);border-radius:8px;background:#fff;display:grid;place-items:end center;padding:4px;font:9.5px ui-monospace,Menlo,monospace;color:var(--mutfg)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#0f1729;color:#fff;font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:99px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:40}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+  <b>Charte graphique</b>
+  <span class="ver">v1 · 15/09/2026</span>
+</div>
+
+<div class="wrap">
+
+<h1>Vintify-clone<br>Charte graphique</h1>
+<p class="lead">Vert profond sur fond blanc. Tokens réels relevés sur le site cible le 15/09/2026 — la charte reste volontairement fidèle : même teinte primaire, même gris de texte, mêmes rayons. Ce qui change, c'est la discipline.</p>
+
+<nav class="toc">
+  <a href="#principe">01 Principe</a>
+  <a href="#couleurs">02 Couleurs</a>
+  <a href="#typo">03 Typographie</a>
+  <a href="#rythme">04 Rythme</a>
+  <a href="#composants">05 Composants</a>
+  <a href="#icones">06 Icônes</a>
+  <a href="#a11y">07 Accessibilité</a>
+  <a href="#maquette">08 Maquette</a>
+  <a href="#regles">09 Règles</a>
+  <a href="#tokens">10 Tokens</a>
+</nav>
+
+<h2 id="principe"><span class="n">01</span> Principe</h2>
+<div class="card flat">
+<p>Un seul vert, beaucoup de blanc, aucun effet. La couleur primaire sert à deux choses : l'action principale et l'état actif. Tout le reste vit en gris.</p>
+<ul class="plain">
+  <li><b>Fond</b> blanc pur, jamais de dégradé en fond de page.</li>
+  <li><b>Vert primaire</b> <span class="pp">hsl(185 100% 26%)</span> — boutons d'action, onglet actif, focus, liens.</li>
+  <li><b>Vert très clair</b> <span class="pp">hsl(185 100% 96%)</span> — surfaces secondaires, badges, sélections.</li>
+  <li><b>Contraste</b> garanti AA minimum, chiffres mesurés en section 07.</li>
+  <li><b>Mobile-first</b> : 480 px maximum, une colonne, scroll vertical.</li>
+</ul>
+</div>
+
+<h2 id="couleurs"><span class="n">02</span> Couleurs</h2>
+
+<h3>Tokens sémantiques</h3>
+<p class="lead mut">Cliquer une pastille copie la valeur HSL.</p>
+<div class="grid2" id="sem"></div>
+
+<h3>Échelle de marque</h3>
+<p class="lead mut">Même teinte 185, du plus clair au plus sombre. Le 600 est la primaire.</p>
+<div class="scale">
+  <div style="background:var(--t50)"><i>50</i></div>
+  <div style="background:var(--t100)"><i>100</i></div>
+  <div style="background:var(--t200)"><i>200</i></div>
+  <div style="background:var(--t300)"><i>300</i></div>
+  <div style="background:var(--t400)"><i>400</i></div>
+  <div style="background:var(--t500)"><i>500</i></div>
+  <div style="background:var(--t600);color:#fff"><i>600</i></div>
+  <div style="background:var(--t700);color:#fff"><i>700</i></div>
+  <div style="background:var(--t800);color:#fff"><i>800</i></div>
+  <div style="background:var(--t900);color:#fff"><i>900</i></div>
+</div>
+
+<h3>Sémantiques d'état</h3>
+<div class="grid3">
+  <button class="sw" data-copy="#0e7c4a"><span class="chip" style="background:var(--ok)"></span><span class="meta"><b>Succès</b><span>#0e7c4a</span></span></button>
+  <button class="sw" data-copy="#b45309"><span class="chip" style="background:var(--warn)"></span><span class="meta"><b>Attention</b><span>#b45309</span></span></button>
+  <button class="sw" data-copy="#ef4343"><span class="chip" style="background:var(--err)"></span><span class="meta"><b>Erreur</b><span>#ef4343</span></span></button>
+</div>
+
+<h3>Variante « vert plus franc » — à trancher</h3>
+<div class="card flat">
+<p>La primaire d'origine tire sur le sarcelle. Si tu veux un vert plus végétal, la seule candidate qui tient le contraste AA sur blanc est <span class="pp">#0e7c4a</span> (5,25:1). <span class="pp">#0f8a5f</span> tombe à 4,36:1 — insuffisant pour du texte, utilisable uniquement en aplat décoratif.</p>
+<div class="grid2">
+  <button class="sw" data-copy="#007a85"><span class="chip" style="background:#007a85"></span><span class="meta"><b>Fidèle (recommandé)</b><span>#007a85 · contraste 5,09:1</span></span></button>
+  <button class="sw" data-copy="#0e7c4a"><span class="chip" style="background:#0e7c4a"></span><span class="meta"><b>Variante verte</b><span>#0e7c4a · contraste 5,25:1</span></span></button>
+</div>
+<p class="hint">Les deux passent AA. Le choix est esthétique, pas technique — dis-moi lequel et je verrouille.</p>
+</div>
+
+<h2 id="typo"><span class="n">03</span> Typographie</h2>
+<div class="card">
+<div class="spec"><span class="tag">Titre — 27 / 900 / -0,02em</span><span class="s900">Photos pro pour vendre plus vite</span></div>
+<div class="spec"><span class="tag">Section — 19 / 800 / -0,01em</span><span class="s800">Étape 1 : photo de l'article</span></div>
+<div class="spec"><span class="tag">Sous-titre — 15 / 700</span><span class="s700">Qualité de génération</span></div>
+<div class="spec"><span class="tag">Corps — 14 / 400 / 1,6</span><span class="s400">Importe ton vêtement et une photo de modèle : Vintify compose le rendu final.</span></div>
+<div class="spec"><span class="tag">Légende — 12,5 / 400 / gris</span><span class="s400m">1 seul crédit consommé, même en deux passes.</span></div>
+<div class="spec"><span class="tag">Étiquette — 11 / 700 / uppercase / +0,06em</span><span class="s11">Images restantes</span></div>
+</div>
+<ul class="plain">
+  <li>Police unique : <b>Inter</b> (fallback système). Poids autorisés : 400, 600, 700, 800, 900.</li>
+  <li>Titres serrés (<span class="pp">letter-spacing négatif</span>), corps neutre à 1,6.</li>
+  <li>Chiffres tabulaires dans les compteurs : <span class="pp">font-variant-numeric:tabular-nums</span>.</li>
+</ul>
+
+<h2 id="rythme"><span class="n">04</span> Rythme &amp; géométrie</h2>
+<div class="card">
+<h3>Espacements (base 4)</h3>
+<div class="ratio">
+  <div style="width:12px;height:12px">4</div><div style="width:20px;height:20px">8</div><div style="width:28px;height:28px">12</div>
+  <div style="width:36px;height:36px">16</div><div style="width:44px;height:44px">24</div><div style="width:56px;height:56px">32</div>
+</div>
+<h3>Rayons</h3>
+<div class="ratio">
+  <div style="width:64px;height:36px;border-radius:8px">8 · badges</div>
+  <div style="width:64px;height:36px;border-radius:10px">10 · boutons</div>
+  <div style="width:64px;height:36px;border-radius:12px">12 · cartes</div>
+  <div style="width:64px;height:36px;border-radius:99px">full · pills</div>
+</div>
+<h3>Ombres</h3>
+<div class="grid3">
+  <div class="card" style="box-shadow:var(--shadow-sm);margin:0;text-align:center;font-size:11px">sm</div>
+  <div class="card" style="box-shadow:var(--shadow-md);margin:0;text-align:center;font-size:11px">md</div>
+  <div class="card" style="box-shadow:var(--shadow-lg);margin:0;text-align:center;font-size:11px">lg</div>
+</div>
+<ul class="plain">
+  <li>Une seule colonne, largeur maximale <b>480 px</b>, marges latérales 16 px.</li>
+  <li>Cible tactile minimale <b>44 px</b> de haut.</li>
+  <li>Espace sous la dernière action : 96 px (barre de navigation mobile).</li>
+</ul>
+</div>
+
+<h2 id="composants"><span class="n">05</span> Composants</h2>
+
+<h3>Boutons</h3>
+<div class="card">
+<div class="btn-row"><button class="btn btn-primary">Générer l'essayage</button><button class="btn btn-secondary">Choisir un modèle</button></div>
+<div class="btn-row" style="margin-top:8px"><button class="btn btn-outline">Précédent</button><button class="btn btn-ghost">Plus tard</button><button class="btn btn-destructive">Supprimer</button></div>
+<div class="btn-row" style="margin-top:8px"><button class="btn btn-sm btn-primary">Tester le prompt</button><button class="btn btn-primary" disabled>Crédits épuisés</button></div>
+<p class="hint">Un seul bouton primaire visible par écran. L'action destructive n'est jamais pleine, elle est contour rouge.</p>
+</div>
+
+<h3>Champs</h3>
+<div class="card">
+<label class="field"><span>Email</span><input class="inp" placeholder="julie@gmail.fr"></label>
+<label class="field"><span>Titre de l'annonce</span><input class="inp" value="Robe Armor Lux — Taille M"></label>
+<label class="field"><span>Avec erreur</span><input class="inp err" value="adresse@invalide"><span class="hint bad">Adresse email invalide.</span></label>
+<p class="hint">Focus = bordure primaire + halo 3 px à 16 % d'opacité. Jamais de bordure noire.</p>
+</div>
+
+<h3>Onglets, filtres, badges</h3>
+<div class="card">
+<div class="tabs" role="tablist"><button role="tab" aria-selected="true">Simple</button><button role="tab" aria-selected="false">Ensemble</button></div>
+<div class="seg" style="margin-top:10px"><button aria-pressed="true">Standard</button><button>HD</button><button disabled>Ultra</button></div>
+<p style="margin-top:10px"><span class="badge dark">Populaire</span> <span class="badge">Plan Pro</span> <span class="badge grey">Bêta</span></p>
+</div>
+
+<h3>Quota</h3>
+<div class="card">
+<p class="s11" style="margin:0">Images restantes</p>
+<p class="s800" style="margin:2px 0 6px">38 / 100</p>
+<div class="quota"><i></i></div>
+<p class="hint">Le compteur fait autorité côté serveur ; l'affichage ne bloque jamais une action à lui seul.</p>
+</div>
+
+<h3>Alertes</h3>
+<div class="card">
+<div class="alert info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Le vêtement source n'est jamais altéré : couleur, motif et coupe sont préservés.</span></div>
+<div class="alert ok" style="margin-top:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span>Essayage généré en 24 s — 1 crédit décompté.</span></div>
+<div class="alert warn" style="margin-top:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01"/></svg><span>Il reste 2 images : passe Pro pour continuer.</span></div>
+<div class="alert err" style="margin-top:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg><span>Génération échouée — crédit remboursé automatiquement.</span></div>
+</div>
+
+<h3>Barre de navigation mobile</h3>
+<div class="card" style="padding:0;overflow:hidden">
+<div class="tabbar">
+  <a href="#composants" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5h16v14H4zM4 10h16"/></svg>Studio</a>
+  <a href="#composants"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Annonces</a>
+  <a href="#composants"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mannequins</a>
+  <a href="#composants"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Essayage</a>
+</div>
+</div>
+
+<h2 id="icones"><span class="n">06</span> Icônes</h2>
+<div class="card">
+<p>Style unique : contour 1,75–2 px, terminaisons arrondies, grille 24 px, taille d'affichage 16 / 19 / 22 px. <b>Aucun emoji dans l'interface</b> — un état s'exprime par une icône, un numéro ou une couleur, jamais par un pictogramme système.</p>
+<div class="btn-row" style="margin-top:10px">
+  <span class="badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Ajouter</span>
+  <span class="badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>Validé</span>
+  <span class="badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14l4-4h10a2 2 0 0 0 2-2z"/></svg>Références</span>
+  <span class="badge"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg>Repasser</span>
+</div>
+</div>
+
+<h2 id="a11y"><span class="n">07</span> Accessibilité — contrastes mesurés</h2>
+<div class="card">
+<p class="lead mut">Ratios calculés sur les tokens réels (WCAG 2.1, seuil AA = 4,5:1 texte courant).</p>
+<div class="grid2" style="margin-top:10px">
+  <div class="card" style="margin:0"><b class="s700">17,87:1</b><p class="s400m">Texte principal sur blanc — AAA</p></div>
+  <div class="card" style="margin:0"><b class="s700">5,09:1</b><p class="s400m">Blanc sur vert primaire — AA</p></div>
+  <div class="card" style="margin:0"><b class="s700">5,25:1</b><p class="s400m">Vert variante sur blanc — AA</p></div>
+  <div class="card" style="margin:0"><b class="s700">4,70:1</b><p class="s400m">Gris légende sur blanc — AA</p></div>
+</div>
+<ul class="plain">
+  <li>Focus toujours visible : <span class="pp">outline 3px rgba(0,122,133,.16)</span> + bordure primaire.</li>
+  <li>Cibles tactiles 44 px, espacées de 8 px minimum.</li>
+  <li>Jamais d'information portée par la couleur seule — icône ou libellé en complément.</li>
+</ul>
+</div>
+
+<h2 id="maquette"><span class="n">08</span> Maquette — écran Essayage</h2>
+<div class="phone">
+  <div class="bar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pri)" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    <b>L'Essayage</b>
+    <span class="badge grey" style="margin-left:auto">1 crédit</span>
+  </div>
+  <div class="body">
+    <p class="s400m" style="margin:6px 0 0">Habille automatiquement un modèle avec ton vêtement.</p>
+    <div class="tabs" style="margin-top:10px"><button aria-selected="true">Vêtement unique</button><button aria-selected="false">Ensemble</button></div>
+    <div class="grid2" style="margin-top:10px;gap:10px">
+      <div class="slot filled"><span class="n">1</span>Vêtement</div>
+      <div class="slot filled"><span class="n">2</span>Modèle</div>
+    </div>
+    <p class="s11" style="margin:14px 0 6px">Qualité de génération</p>
+    <div class="qual">
+      <button class="on">Standard<small>1K</small></button>
+      <button>HD<small>2K · PRO</small></button>
+      <button disabled>Ultra<small>4K · MAX</small></button>
+    </div>
+    <p class="s11" style="margin:14px 0 6px">Inspiration modèles — 1 / 26</p>
+    <div class="mgrid">
+      <div class="m on"><i>1</i></div><div class="m"><i>2</i></div><div class="m"><i>3</i></div><div class="m"><i>4</i></div>
+      <div class="m"><i>5</i></div><div class="m"><i>6</i></div><div class="m"><i>7</i></div><div class="m"><i>8</i></div>
+    </div>
+    <p class="s11" style="margin:14px 0 6px">Ton modèle</p>
+    <div class="slot" style="aspect-ratio:16/7">Glisser · coller · parcourir</div>
+    <div style="padding:14px 0 16px">
+      <button class="btn btn-primary btn-full">Générer l'essayage</button>
+      <p class="hint" style="text-align:center">Importe les deux photos pour commencer</p>
+    </div>
+  </div>
+  <div class="tabbar">
+    <a href="#maquette" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 5h16v14H4zM4 10h16"/></svg>Studio</a>
+    <a href="#maquette"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Annonces</a>
+    <a href="#maquette"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Mannequins</a>
+    <a href="#maquette"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Essayage</a>
+  </div>
+</div>
+<p class="hint">Largeur rendue : 480 px maximum, colonne unique. Ordre de lecture conservé : références, puis prompt et réglages dans une même carte, action pleine largeur en bas.</p>
+
+<h2 id="regles"><span class="n">09</span> Règles</h2>
+<div class="do">Vert primaire réservé à l'action principale et à l'état actif. Un seul aplat vert par écran.</div>
+<div class="do">Blanc pur en fond de page, gris très clair pour les surfaces secondaires.</div>
+<div class="do">Bordures 1 px gris à la place des ombres pour les listes et les tableaux.</div>
+<div class="do">Icônes SVG au trait, chiffres et libellés à la place des pictogrammes décoratifs.</div>
+<div class="dont">Pas d'emoji dans l'interface — un état passe par une icône, un numéro ou une couleur.</div>
+<div class="dont">Pas de dégradé en fond de page, pas de néon, pas de verre dépoli sur les cartes.</div>
+<div class="dont">Pas de texte vert clair sur blanc, pas de gris sur gris : les ratios AA de la section 07 sont un plancher.</div>
+<div class="dont">Pas de thème sombre en v1 — la charte cible un fond blanc assumé.</div>
+
+<h2 id="tokens"><span class="n">10</span> Tokens à coller</h2>
+<div class="card flat">
+<pre>:root{
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --primary: 185 100% 26%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 185 100% 96%;
+  --secondary-foreground: 185 100% 15%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 185 100% 26%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 185 100% 26%;
+  --radius: .75rem;
+  --font-sans: "Inter", sans-serif;
+  /* échelle de marque */
+  --teal-50:#f1fcfd;  --teal-100:#e3fafc; --teal-200:#b8f9ff;
+  --teal-300:#7af4ff; --teal-400:#0aebff; --teal-500:#00b2c2;
+  --teal-600:#007a85; --teal-700:#00626b; --teal-800:#004b52; --teal-900:#003338;
+}</pre>
+<p class="hint">Compatible Tailwind / shadcn (format HSL à trois canaux). Si tu retiens la variante verte, une seule ligne change : <span class="pp">--primary: 152 80% 27%</span>.</p>
+</div>
+
+</div>
+
+<div class="toast" id="toast">Copié</div>
+
+<script>
+(function () {
+  var toast = document.getElementById('toast');
+  var t;
+  function flash(msg) {
+    toast.textContent = msg;
+    toast.classList.add('on');
+    clearTimeout(t);
+    t = setTimeout(function () { toast.classList.remove('on'); }, 1400);
+  }
+  var sem = [
+    ['Primaire', 'hsl(185 100% 26%)', '#007a85', 'Actions, état actif, focus'],
+    ['Primaire foncé', 'hsl(185 100% 21%)', '#00626b', 'Survol du bouton primaire'],
+    ['Secondaire', 'hsl(185 100% 96%)', '#ebfdff', 'Surfaces, badges, sélections'],
+    ['Texte', 'hsl(222 47% 11%)', '#0f1729', 'Titres et corps de texte'],
+    ['Texte atténué', 'hsl(215 16% 47%)', '#65758b', 'Légendes, aides, placeholders'],
+    ['Surface neutre', 'hsl(210 40% 96%)', '#f1f5f9', 'Onglets, fonds secondaires'],
+    ['Bordure', 'hsl(214 32% 91%)', '#e1e7ef', 'Traits, séparateurs, champs'],
+    ['Erreur', 'hsl(0 84% 60%)', '#ef4343', 'Échec, suppression']
+  ];
+  var host = document.getElementById('sem');
+  sem.forEach(function (row) {
+    var b = document.createElement('button');
+    b.className = 'sw';
+    b.setAttribute('data-copy', row[1]);
+    b.innerHTML = '<span class="chip" style="background:' + row[2] + '"></span><span class="meta"><b>' + row[0] + '</b><span>' + row[1] + '</span><span>' + row[3] + '</span></span>';
+    host.appendChild(b);
+  });
+
+  document.addEventListener('click', function (e) {
+    var sw = e.target.closest ? e.target.closest('[data-copy]') : null;
+    if (sw) {
+      var v = sw.getAttribute('data-copy');
+      if (navigator.clipboard) navigator.clipboard.writeText(v);
+      flash('Copié : ' + v);
+    }
+    var tab = e.target.closest ? e.target.closest('.tabs button') : null;
+    if (tab) { [...tab.parentNode.children].forEach(function (x) { x.setAttribute('aria-selected', 'false'); }); tab.setAttribute('aria-selected', 'true'); }
+    var seg = e.target.closest ? e.target.closest('.seg button, .qual button') : null;
+    if (seg && !seg.disabled) {
+      [...seg.parentNode.children].forEach(function (x) { x.setAttribute('aria-pressed', 'false'); x.classList.remove('on'); });
+      seg.setAttribute('aria-pressed', 'true'); seg.classList.add('on');
+    }
+  });
+})();
+</script>
+</body>
+</html>
